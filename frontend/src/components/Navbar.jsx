@@ -20,7 +20,7 @@ const Navbar = () => {
 
       <div
         className={`max-md:absolute max-md:top-0 z-50 max-md:w-full max-md:h-screen max-md:px-9 max-md:font-medium max-md:text-lg flex flex-col md:flex-row items-center max-md:justify-center gap-8 md:px-6 py-3 md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/20 overflow-hidden transition-all duration-300 ${
-          isMenuOpen ? 'max-md:left-0' : 'max-md:left-[-100%]'
+          isMenuOpen ? 'max-md:left-0' : 'max-md:left-full'
         }`}
       >
 
