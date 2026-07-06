@@ -24,7 +24,7 @@ const Navbar = () => {
       </Link>
 
       <div
-        className={`max-md:absolute max-md:top-0 max-md:w-full max-md:h-screen max-md:px-9 max-md:font-medium max-md:text-lg z-50 flex flex-col md:flex-row items-center max-md:justify-center gap-8 md:px-6 py-3 md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/20 overflow-hidden transition-all duration-300 ${
+        className={`max-md:absolute max-md:top-0 max-md:w-full max-md:h-screen max-md:px-9 max-md:font-medium max-md:text-lg z-50 flex flex-col md:flex-row items-center max-md:justify-center gap-10 md:px-6 py-3 md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/20 overflow-hidden transition-all duration-300 ${
           isMenuOpen ? 'max-md:left-0' : 'max-md:left-full'
         }`}
       >
