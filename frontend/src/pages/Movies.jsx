@@ -2,6 +2,7 @@ import React from 'react'
 import { dummyShowsData } from '../assets/assets'
 import MovieCard from '../components/MovieCard'
 import BlurCircle from '../components/BlurCircle'
+import DateSelect from '../components/DateSelect'
 
 const Movies = () => {
   return dummyShowsData.length > 0 ? (
@@ -35,7 +36,6 @@ const Movies = () => {
         ))}
 
       </div>
-
     </div>
 
   ) : (

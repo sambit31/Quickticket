@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { dummyDateTimeData, dummyShowsData } from "../assets/assets";
-import { useParams } from "react-router-dom";
+import { dummyCastsData, dummyDateTimeData, dummyShowsData } from "../assets/assets";
+import { useNavigate, useParams } from "react-router-dom";
 import BlurCircle from "../components/BlurCircle";
 import { CalendarDays, Clock3, Heart, PlayCircleIcon, PlayOffIcon, StarIcon } from "lucide-react";
+import DateSelect from "../components/DateSelect";
+import MovieCard from "../components/MovieCard";
+import Loading from "../components/Loading";
 
 const MovieDetails = () => {
+
+  const navigate = useNavigate();
   const { id } = useParams();
   const [show, setShow] = useState(null);
 
@@ -25,8 +30,8 @@ const MovieDetails = () => {
 
   if (!show)
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-400 text-xl">
-        Loading...
+      <div className="min-h-screen  flex flex-col items-center justify-center text-gray-400">
+        <Loading />
       </div>
     );
 
@@ -34,7 +39,7 @@ const MovieDetails = () => {
     <div className="relative min-h-screen overflow-hidden top-15">
 
       {/* Backdrop */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 ">
         <img
           src={show.movie.backdrop_path}
           alt=""
@@ -46,7 +51,7 @@ const MovieDetails = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#09090B] via-[#09090B]/80 to-[#09090B]" />
       </div>
 
-      <BlurCircle top="-60px" left="-120px" />
+      <BlurCircle top="-100px" left="-120px" />
       <BlurCircle bottom="-100px" right="-80px" />
 
       <div className="relative px-6 md:px-16 lg:px-24 xl:px-44 py-20">
@@ -55,39 +60,34 @@ const MovieDetails = () => {
 
           {/* Poster */}
           <div className="flex justify-center ">
-            <img
-              src={show.movie.poster_path}
-              alt={show.movie.title}
-              className="w-72 rounded-3xl shadow-2xl transition duration-500 hover:scale-105"
-            />
-
+            <img src={show.movie.poster_path} alt={show.movie.title} className="w-72 rounded-3xl shadow-2xl transition duration-500 hover:scale-105" />
           </div>
 
           {/* Details */}
-         {/* Details */}
-<div className="flex-1">
+          {/* Details */}
+          <div className="flex-1">
 
-  <span className="inline-block px-4 py-1 rounded-full bg-pink-600/20 border border-pink-500 text-pink-400 text-sm font-medium">
-    English
-  </span>
+            <span className="inline-block px-4 py-1 rounded-full bg-pink-600/20 border border-pink-500 text-pink-400 text-sm font-medium">
+              English
+            </span>
 
-  {/* Title + Favorite */}
-  <div className="flex items-center justify-between mt-5">
+            {/* Title + Favorite */}
+            <div className="flex items-center justify-between mt-5">
 
-    <h1 className="text-5xl font-bold leading-tight">
-      {show.movie.title}
-    </h1>
+              <h1 className="text-5xl font-bold leading-tight">
+                {show.movie.title}
+              </h1>
 
-    <button
-      className="w-12 h-12 flex items-center justify-center rounded-full
+              <button
+                className="w-12 h-12 flex items-center justify-center rounded-full
       bg-white/10 backdrop-blur-md border border-white/10
       hover:bg-pink-600 hover:border-pink-600
       transition-all duration-300"
-    >
-      <Heart className="w-6 h-6" />
-    </button>
+              >
+                <Heart className="w-6 h-6" />
+              </button>
 
-  </div>
+            </div>
 
             {/* Rating */}
             <div className="flex items-center gap-3 mt-6">
@@ -162,7 +162,7 @@ const MovieDetails = () => {
 
               {/* Buy Tickets */}
               <a
-                href="/tickets"
+                href="#date-select"
                 className="flex items-center justify-center
     px-8 py-4
     rounded-xl
@@ -177,10 +177,63 @@ const MovieDetails = () => {
               </a>
 
             </div>
-
-
           </div>
 
+        </div>
+        <div className="mt-20">
+          <h2 className="text-3xl font-bold mb-8">
+            Cast
+          </h2>
+
+          <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
+
+            {dummyCastsData.map((cast, index) => (
+
+              <div
+                key={index}
+                className="flex-shrink-0 w-26 text-center group"
+              >
+
+                <img
+                  src={cast.profile_path}
+                  alt={cast.name}
+                  className="w-22 h-22 rounded-full object-center mx-auto
+          border-2 border-transparent
+          group-hover:border-pink-500
+          transition duration-300"
+                />
+
+                <h3 className="mt-3 font-semibold">
+                  {cast.name}
+                </h3>
+              </div>
+
+            ))}
+
+          </div>
+        </div>
+        {/* Date Selection */}
+        <div className="mt-20 flex justify-center" id="date-select">
+          <DateSelect
+            id={show.movie._id}
+            dateTime={show.dateTime}
+          />
+
+        </div>
+
+        <div className="mt-20">
+          <p className="text-xl font-bold mb-8">You May Also Like</p>
+
+          <div className="flex felx-wrap max-sm:justify-center gap-8">{dummyShowsData.slice(0, 5).map((movie) => (
+            <MovieCard key={movie._id} movie={movie} />
+          ))}
+          </div>
+
+          <div className="flex justify-center mt-20">
+            <button onClick={() => { navigate('/movies'); window.scrollTo(0, 0) }} className="px-6 py-3 bg-pink-600 hover:opacity-90 transition rounded-full font-medium cursor-pointer">
+              Show more
+            </button>
+          </div>
         </div>
 
       </div>
