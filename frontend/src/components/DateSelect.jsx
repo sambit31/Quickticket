@@ -85,7 +85,7 @@ const DateSelect = ({ dateTime, id }) => {
       {/* Book Button */}
       <button
         onClick={onBookHandler}
-        className="mt-6 w-full rounded-xl bg-linear-to-r from-pink-600 to-fuchsia-600 py-3 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-pink-600/40 active:scale-95"
+        className="mt-6 w-full rounded-xl bg-gradient-to-r from-pink-600 to-fuchsia-600 py-3 font-semibold text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-pink-600/40 active:scale-95"
       >
         Book Now
       </button>
