@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { dummyDateTimeData, dummyShowsData } from "../assets/assets";
 import { useParams } from "react-router-dom";
 import BlurCircle from "../components/BlurCircle";
-import { CalendarDays, Clock3, StarIcon } from "lucide-react";
+import { CalendarDays, Clock3, Heart, PlayCircleIcon, PlayOffIcon, StarIcon } from "lucide-react";
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -34,17 +34,17 @@ const MovieDetails = () => {
     <div className="relative min-h-screen overflow-hidden top-15">
 
       {/* Backdrop */}
-     <div className="absolute inset-0">
-  <img
-    src={show.movie.backdrop_path}
-    alt=""
-    className="w-full h-full object-cover"
-  />
+      <div className="absolute inset-0">
+        <img
+          src={show.movie.backdrop_path}
+          alt=""
+          className="w-full h-full object-cover"
+        />
 
-  <div className="absolute inset-0 bg-black/70" />
+        <div className="absolute inset-0 bg-black/70" />
 
         <div className="absolute inset-0 bg-gradient-to-r from-[#09090B] via-[#09090B]/80 to-[#09090B]" />
-</div>
+      </div>
 
       <BlurCircle top="-60px" left="-120px" />
       <BlurCircle bottom="-100px" right="-80px" />
@@ -60,18 +60,34 @@ const MovieDetails = () => {
               alt={show.movie.title}
               className="w-72 rounded-3xl shadow-2xl transition duration-500 hover:scale-105"
             />
+
           </div>
 
           {/* Details */}
-          <div className="flex-1">
+         {/* Details */}
+<div className="flex-1">
 
-            <span className="inline-block px-4 py-1 rounded-full bg-pink-600/20 border border-pink-500 text-pink-400 text-sm font-medium">
-              English
-            </span>
+  <span className="inline-block px-4 py-1 rounded-full bg-pink-600/20 border border-pink-500 text-pink-400 text-sm font-medium">
+    English
+  </span>
 
-            <h1 className="text-5xl font-bold mt-5 leading-tight">
-              {show.movie.title}
-            </h1>
+  {/* Title + Favorite */}
+  <div className="flex items-center justify-between mt-5">
+
+    <h1 className="text-5xl font-bold leading-tight">
+      {show.movie.title}
+    </h1>
+
+    <button
+      className="w-12 h-12 flex items-center justify-center rounded-full
+      bg-white/10 backdrop-blur-md border border-white/10
+      hover:bg-pink-600 hover:border-pink-600
+      transition-all duration-300"
+    >
+      <Heart className="w-6 h-6" />
+    </button>
+
+  </div>
 
             {/* Rating */}
             <div className="flex items-center gap-3 mt-6">
@@ -129,9 +145,39 @@ const MovieDetails = () => {
             </p>
 
             {/* Button */}
-            <button className="mt-10 px-8 py-4 rounded-xl bg-pink-600 hover:bg-pink-700 transition font-semibold shadow-lg shadow-pink-600/30">
-              Book Tickets
-            </button>
+            <div className="flex items-center gap-4 mt-10">
+
+              {/* Watch Trailer */}
+              <button
+                className="flex items-center gap-2 px-8 py-4 rounded-xl
+    border border-pink-600
+    text-white hover:text-pink-300
+    hover:bg-pink-600/10
+    transition-all duration-300
+    font-semibold"
+              >
+                <PlayCircleIcon className="w-5 h-5" />
+                Watch Trailer
+              </button>
+
+              {/* Buy Tickets */}
+              <a
+                href="/tickets"
+                className="flex items-center justify-center
+    px-8 py-4
+    rounded-xl
+    bg-pink-600
+    hover:bg-pink-700
+    transition-all duration-300
+    font-semibold
+    shadow-lg shadow-pink-600/30
+    hover:scale-105"
+              >
+                Buy Tickets
+              </a>
+
+            </div>
+
 
           </div>
 
