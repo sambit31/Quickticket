@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { assets, dummyDateTimeData, dummyShowsData } from "../assets/assets";
 import Loading from "../components/Loading";
-import MyBooking from "../pages/MyBooking"
+
 import BlurCircle from "../components/BlurCircle";
 import { ClockIcon, ArmchairIcon } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -213,7 +213,7 @@ const SeatLayout = () => {
 
           {selectedSeats.length > 0 && (
             <button
-              onClick={() => navigate("/MyBooking")}
+              onClick={() => navigate("/my-bookings")}
               className="mt-10 bg-pink-600 hover:bg-pink-700 px-8 py-3 rounded-lg"
             >
               Proceed ({selectedSeats.length})
