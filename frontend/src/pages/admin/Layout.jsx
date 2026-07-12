@@ -1,0 +1,26 @@
+import React from "react";
+import { Outlet } from "react-router-dom";
+import AdminNavbar from "../../components/admin/AdminNavbar";
+import AdminSidebar from "../../components/admin/AdminSidebar";
+
+const Layout = () => {
+  return (
+    <div className="min-h-screen  text-white">
+      {/* Navbar */}
+      <AdminNavbar />
+
+      {/* Sidebar + Main Content */}
+      <div className="flex h-[calc(100vh-64px)]">
+        {/* Sidebar */}
+        <AdminSidebar />
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto p-6 md:p-10">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Layout;
