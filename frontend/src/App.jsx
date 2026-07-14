@@ -15,6 +15,7 @@ import AddShows from './pages/admin/AddShows'
 import ListBookings from './pages/admin/ListBookings'
 import ListShows from './pages/admin/ListShows'
 import Deshboard from './pages/admin/Deshboard'
+import SyncUser from './components/users/SyncUser'
 
 const App = () => {
 
@@ -23,6 +24,7 @@ const App = () => {
   return (
     <>
     <Toaster />
+    <SyncUser />
     {!isAdminRoute && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
