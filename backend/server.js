@@ -18,7 +18,7 @@ await connectDB();
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use(clerkMiddleware());
+
 
 // Test Route
 app.get("/", (req, res) => {
@@ -33,6 +33,9 @@ app.use(
     functions,
   })
 );
+
+
+app.use(clerkMiddleware());
 
 // Start Server
 app.listen(port, () => {
