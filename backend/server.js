@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 import connectDB from "./configs/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import showRouter from "./routes/showRoutes.js";
 
 dotenv.config();
 
@@ -16,10 +17,13 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/users", userRoutes);
+app.use('/api/show', showRouter);
 
 app.get("/", (req, res) => {
   res.send("🚀 Server is Live!");
 });
+
+
 
 app.listen(port, () => {
   console.log(`🚀 Server running on http://localhost:${port}`);

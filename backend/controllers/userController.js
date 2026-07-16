@@ -40,4 +40,8 @@ export const syncUser = async (req, res) => {
       message: error.message,
     });
   }
+
 };
+
+
+ 

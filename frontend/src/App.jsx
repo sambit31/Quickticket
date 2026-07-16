@@ -17,6 +17,7 @@ import ListShows from './pages/admin/ListShows'
 import Deshboard from './pages/admin/Deshboard'
 import SyncUser from './components/users/SyncUser'
 
+
 const App = () => {
 
   const isAdminRoute = window.location.pathname.startsWith('/admin');
@@ -25,6 +26,7 @@ const App = () => {
     <>
     <Toaster />
     <SyncUser />
+  
     {!isAdminRoute && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
