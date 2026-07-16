@@ -58,7 +58,7 @@ const AddShows = () => {
         Now Playing Movies
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-6 object-cover">
 
         {nowPlayingMovies.map((movie) => (
           <div
@@ -76,7 +76,7 @@ const AddShows = () => {
             <img
               src={movie.poster_path}
               alt={movie.title}
-              className="h-72 w-full object-cover"
+              className="aspect-[2/3] w-full object-cover rounded-lg"
             />
 
             {/* Tick */}
