@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import connectDB from "./configs/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import showRouter from "./routes/showRoutes.js";
+import bookingRouter from "./routes/bookingRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -18,6 +20,8 @@ app.use(cors());
 
 app.use("/api/users", userRoutes);
 app.use('/api/show', showRouter);
+app.use('/api/booking',bookingRouter);
+app.use('/api/admin',adminRouter)
 
 app.get("/", (req, res) => {
   res.send("🚀 Server is Live!");
