@@ -8,7 +8,7 @@ router.post("/sync", syncUser);
 //user bookings
 router.get("/bookings",getUserBookings);
 router.post("/update-favorite",updateFavourite);
-router.post("/favorites", getFavourites);
+router.get("/favorites", getFavourites);
 
 
 export default router;

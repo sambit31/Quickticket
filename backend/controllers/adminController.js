@@ -6,9 +6,20 @@ import showRouter from "../routes/showRoutes.js";
 
 
 //API to check if user is Admin
-export const isAdmin = async(req,res)=>{
-    res.json({success: true, isAdmin:true})
-}
+export const isAdmin = async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      isAdmin: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 //API to get deshboard data
 export const getDashboardData = async (req, res) => {
