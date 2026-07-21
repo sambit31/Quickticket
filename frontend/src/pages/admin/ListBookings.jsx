@@ -4,17 +4,36 @@ import Loading from "../../components/Loading";
 import { CheckCircle, Clock3 } from "lucide-react";
 import { dateFormat } from "../../lib/dateFormat";
 import BlurCircle from "../../components/BlurCircle";
+import { useAppContext } from "../../context/AppContext";
 
 const ListBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
 
+  const { axios, getToken, user, image_base_url } = useAppContext();
+ 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+  const getAllBookings = async()=>{
+   try {
+      const {data} = await axios.get("/api/admin/all-bookings",{
+         headers:{
+                Authorization: `Bearer ${await getToken()}`
+              }
+            })
+            setBookings(data.bookings)
+    } catch (error) {
+      console.log(error);
+    }
+     setLoading(false);
+  };
+  
   useEffect(() => {
-    setBookings(dummyBookingData);
-    setLoading(false);
-  }, []);
+    if(user){
+      getAllBookings();
+    }
+  }, [user]);
 
   if (loading) return <Loading />;
 

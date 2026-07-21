@@ -26,6 +26,7 @@ const SyncUserCreation = inngest.createFunction(
     });
 
     console.log("✅ User Created");
+  
   }
 );
 

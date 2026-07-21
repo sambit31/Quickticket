@@ -6,6 +6,8 @@ import { CalendarDays, Clock3, Heart, PlayCircleIcon, PlayOffIcon, StarIcon } fr
 import DateSelect from "../components/DateSelect";
 import MovieCard from "../components/MovieCard";
 import Loading from "../components/Loading";
+import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const MovieDetails = () => {
 
@@ -13,20 +15,42 @@ const MovieDetails = () => {
   const { id } = useParams();
   const [show, setShow] = useState(null);
 
-  const getShow = () => {
-    const movie = dummyShowsData.find((item) => item._id === id);
+  const {shows, axios, getToken, user,fetchFavoritesMovies,favouriteMovies,image_base_url} = useAppContext()
 
-    if (!movie) return;
-
-    setShow({
-      movie,
-      dateTime: dummyDateTimeData,
-    });
+  const getShow = async() => {
+    try {
+      const {data} = await axios.get(`/api/show/${id}`)
+      if(data.success){
+        setShow(data)
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
   };
+
+ 
+
+  const handleFavorite = async()=>{
+    try {
+      if(!user) return toast.error("please login");
+      const {data} = await axios.post("/api/users/update-favorite",{movieId: id},
+        {headers:{Authorization: `Bearer ${await getToken()}`}}
+      )
+      if(data.success){
+        await fetchFavoritesMovies()
+        toast.success(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     getShow();
   }, [id]);
+
+
 
   if (!show)
     return (
@@ -41,7 +65,7 @@ const MovieDetails = () => {
       {/* Backdrop */}
       <div className="absolute inset-0 ">
         <img
-          src={show.movie.backdrop_path}
+          src={image_base_url + show.movie.backdrop_path}
           alt=""
           className="w-full h-full object-cover"
         />
@@ -60,7 +84,7 @@ const MovieDetails = () => {
 
           {/* Poster */}
           <div className="flex justify-center ">
-            <img src={show.movie.poster_path} alt={show.movie.title} className="w-72 rounded-3xl shadow-2xl transition duration-500 hover:scale-105" />
+            <img src={image_base_url + show.movie.poster_path} alt={show.movie.title} className="w-72 rounded-3xl shadow-2xl transition duration-500 hover:scale-105" />
           </div>
 
           {/* Details */}
@@ -78,13 +102,13 @@ const MovieDetails = () => {
                 {show.movie.title}
               </h1>
 
-              <button
+              <button onClick={handleFavorite}
                 className="w-12 h-12 flex items-center justify-center rounded-full
       bg-white/10 backdrop-blur-md border border-white/10
       hover:bg-pink-600 hover:border-pink-600
       transition-all duration-300"
               >
-                <Heart className="w-6 h-6" />
+                <Heart className={`w-5 h-5 ${favouriteMovies.find(movie => movie._id ===id) ? 'fill-pink-600 text-pink-500' : ""}`} />
               </button>
 
             </div>
@@ -184,33 +208,24 @@ const MovieDetails = () => {
           <h2 className="text-3xl font-bold mb-8">
             Cast
           </h2>
+<div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
+  {show.movie.casts.slice(0,12).map((cast,index) => (
+    <div
+      key={index}
+      className="flex-shrink-0 w-26 text-center group"
+    >
+      <img
+        src={image_base_url + cast.profile_path}
+        alt={cast.name}
+        className="w-22 h-22 rounded-full object-cover mx-auto border-2 border-transparent group-hover:border-pink-500 transition duration-300"
+      />
 
-          <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
-
-            {dummyCastsData.map((cast, index) => (
-
-              <div
-                key={index}
-                className="flex-shrink-0 w-26 text-center group"
-              >
-
-                <img
-                  src={cast.profile_path}
-                  alt={cast.name}
-                  className="w-22 h-22 rounded-full object-center mx-auto
-          border-2 border-transparent
-          group-hover:border-pink-500
-          transition duration-300"
-                />
-
-                <h3 className="mt-3 font-semibold">
-                  {cast.name}
-                </h3>
-              </div>
-
-            ))}
-
-          </div>
+      <h3 className="mt-3 font-semibold">
+        {cast.name}
+      </h3>
+    </div>
+  ))}
+</div>
         </div>
         {/* Date Selection */}
         <div className="mt-20 flex justify-center" id="date-select">

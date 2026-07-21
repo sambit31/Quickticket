@@ -31,7 +31,9 @@ export const getDashboardData = async (req, res) => {
     // Get all upcoming shows
     const activeShows = await Show.find({
       showDateTime: { $gte: new Date() },
+      
     }).populate("movie");
+   
 
     // Count total users
     const totalUsers = await User.countDocuments();
@@ -102,6 +104,33 @@ export const getAllBookings = async (req, res) => {
   } catch (error) {
     console.error(error);
 
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
+export const deleteShow = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const show = await Show.findByIdAndDelete(id);
+
+    if (!show) {
+      return res.status(404).json({
+        success: false,
+        message: "Show not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Show deleted successfully",
+    });
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: error.message,

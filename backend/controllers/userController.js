@@ -36,6 +36,8 @@ export const syncUser = async (req, res) => {
       success: true,
       message: "User Created",
     });
+    
+   
 
   } catch (error) {
     res.status(500).json({

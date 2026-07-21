@@ -1,11 +1,12 @@
 import React from 'react'
-import { dummyShowsData } from '../assets/assets'
 import MovieCard from '../components/MovieCard'
 import BlurCircle from '../components/BlurCircle'
+import { useAppContext } from '../context/AppContext'
 
 const Favorite = () => {
+  const {favouriteMovies} = useAppContext()
 
-  return dummyShowsData.length > 0 ? (
+  return favouriteMovies.length > 0 ? (
 
     <div className='relative px-6 md:px-16 lg:px-24 xl:px-44 py-24 min-h-screen overflow-hidden'>
 
@@ -28,7 +29,7 @@ const Favorite = () => {
       {/* Movies Grid */}
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6'>
 
-        {dummyShowsData.map((movie) => ( <MovieCard key={movie._id} movie={movie}/>))}
+        {favouriteMovies.map((movie) => ( <MovieCard key={movie._id} movie={movie}/>))}
 
       </div>
 

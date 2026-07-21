@@ -7,6 +7,7 @@ import BlurCircle from "../components/BlurCircle";
 import { ClockIcon, ArmchairIcon } from "lucide-react";
 import { toast } from "react-hot-toast";
 import isoTimeFormat from "../lib/isoTimeFormat";
+import { useAppContext } from "../context/AppContext";
 
 // TODO: replace with occupied seats returned by your booking API for this show/time
 const dummyOccupiedSeats = ["A3", "A4", "C5", "D5", "G7", "H2"];
@@ -41,15 +42,25 @@ const SeatLayout = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [show, setShow] = useState(null);
 
-  useEffect(() => {
-    const movieShow = dummyShowsData.find((s) => s.id === parseInt(id));
-    if (movieShow) {
-      setShow({
-        movie: movieShow,
-        dateTime: dummyDateTimeData,
-      });
+  const { axios, getToken, user } = useAppContext()
+
+
+  const getShow = async () => {
+    try {
+      const { data } = await axios.get(`/api/show/${id}`)
+      if (data.success) {
+        setShow(data)
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }, [id]);
+  }
+useEffect(() => {
+  if (user) {
+    getShow();
+  }
+}, [id, user]);
+
 
   const price = show?.movie?.price || 220;
   const total = selectedSeats.length * price;

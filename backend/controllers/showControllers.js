@@ -17,7 +17,6 @@ export const getNowPlayingMovies = async (req, res) => {
       }
     );
     
-
     res.status(200).json({
       success: true,
       movies: data.results,

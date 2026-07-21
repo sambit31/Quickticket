@@ -4,21 +4,63 @@ import Loading from "../../components/Loading";
 import { StarIcon, Trash2Icon } from "lucide-react";
 import { dateFormat } from "../../lib/dateFormat";
 import BlurCircle from "../../components/BlurCircle";
+import { useAppContext } from "../../context/AppContext";
 
 const ListShows = () => {
   const currency = import.meta.env.VITE_CURRENCY;
 
+    const { axios, getToken, user, image_base_url } = useAppContext();
+  
+
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setShows(dummyDashboardData.activeShows);
-    setLoading(false);
-  }, []);
 
-  const deleteShow = (id) => {
-    setShows(shows.filter((show) => show._id !== id));
-  };
+  const getAllShows = async()=>{
+    try {
+      const {data} = await axios.get("/api/admin/all-shows",{
+         headers:{
+                Authorization: `Bearer ${await getToken()}`
+              }
+            })
+            setShows(data.shows)
+            setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    if(user){
+      getAllShows();
+    }
+  }, [user]);
+
+
+
+
+  const deleteShow = async (id) => {
+  try {
+    const { data } = await axios.delete(`/api/admin/show/${id}`, {
+      headers: {
+        Authorization: `Bearer ${await getToken()}`,
+      },
+    });
+
+    if (data.success) {
+      setShows((prev) => prev.filter((show) => show._id !== id));
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    console.log(error.response?.data || error);
+    toast.error(error.response?.data?.message || "Failed to delete show");
+  }
+};
+
+
+
+
 
   if (loading) return <Loading />;
 
@@ -51,7 +93,7 @@ const ListShows = () => {
             {/* Poster */}
 
             <img
-              src={show.movie.poster_path}
+              src={image_base_url + show.movie.poster_path}
               alt={show.movie.title}
               className="w-full h-72 object-cover"
             />

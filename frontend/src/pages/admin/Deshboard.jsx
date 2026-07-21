@@ -1,19 +1,18 @@
 import React from 'react'
-import {
-    ChartLineIcon,
-    CircleDollarSignIcon,
-    PlayCircleIcon,
-    StarIcon,
-    UsersIcon,
-} from "lucide-react";
+import { ChartLineIcon, CircleDollarSignIcon, PlayCircleIcon, StarIcon, UsersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { dummyDashboardData } from "../../assets/assets";
 import Loading from "../../components/Loading";
 import { dateFormat } from '../../lib/dateFormat';
 import BlurCircle from '../../components/BlurCircle';
+import { useAppContext } from '../../context/AppContext';
+import toast from 'react-hot-toast';
+
 
 
 const Deshboard = () => {
+
+  const { axios, getToken, user, image_base_url } = useAppContext();
 
     const currency = import.meta.env.VITE_CURRENCY;
 
@@ -54,13 +53,29 @@ const Deshboard = () => {
     ];
 
     const fetchDashboardData = async () => {
-        setDashboardData(dummyDashboardData);
-        setLoading(false);
+      try {
+        const {data} = await axios.get("/api/admin/dashboard",{
+            headers:{
+                Authorization: `Bearer ${await getToken()}`}})
+               
+                if(data.success){
+                    setDashboardData(data.dashboardData)
+                    setLoading(false)
+                }
+      } catch (error) {
+toast.error(
+    error.response?.data?.message || "Failed to fetch dashboard"
+  );      }
     };
 
     useEffect(() => {
-        fetchDashboardData();
-    }, []);
+        if(user){
+            fetchDashboardData();
+        }
+    }, [user]);
+
+    
+
 
     if (loading) return <Loading />;
 
@@ -118,7 +133,7 @@ const Deshboard = () => {
                         >
                             {/* Poster */}
                             <img
-                                src={show.movie.poster_path}
+                                src={image_base_url + show.movie.poster_path}
                                 alt={show.movie.title}
                                 className="w-full h-72 object-cover"
                             />

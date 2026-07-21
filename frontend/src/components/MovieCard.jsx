@@ -2,10 +2,12 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Clock3, StarIcon } from 'lucide-react'
 import TimeFormat from '../lib/TimeFormat'
+import { useAppContext } from '../context/AppContext'
 
 const MovieCard = ({ movie }) => {
 
   const navigate = useNavigate()
+  const {image_base_url}=useAppContext()
 
   return (
     <div className='group bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2'>
@@ -18,7 +20,7 @@ const MovieCard = ({ movie }) => {
             navigate(`/movies/${movie._id}`)
             window.scrollTo(0,0)
           }}
-          src={movie.backdrop_path}
+          src={image_base_url + movie.backdrop_path}
           alt={movie.title}
           className='h-56 w-full object-cover cursor-pointer transition duration-500 group-hover:scale-110'
         />
