@@ -21,6 +21,7 @@ export const isAdmin = async (req, res) => {
   }
 };
 
+
 //API to get deshboard data
 export const getDashboardData = async (req, res) => {
   try {
@@ -80,6 +81,7 @@ export const getAllShows = async (req, res) => {
     });
   }
 };
+
 
 export const getAllBookings = async (req, res) => {
   try {

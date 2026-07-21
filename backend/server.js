@@ -1,3 +1,6 @@
+import dns from "dns";
+dns.setDefaultResultOrder("ipv4first");
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -25,10 +28,10 @@ app.use('/api/show', showRouter);
 app.use('/api/booking',bookingRouter);
 app.use('/api/admin',adminRouter)
 
+
 app.get("/", (req, res) => {
   res.send("🚀 Server is Live!");
 });
-
 
 
 app.listen(port, () => {

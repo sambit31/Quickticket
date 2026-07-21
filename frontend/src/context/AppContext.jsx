@@ -12,6 +12,10 @@ export const AppProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(true);
   const [shows, setShows] = useState([]);
   const [favouriteMovies, setFavouriteMovies] = useState([]);
+  const [loadingAdmin, setLoadingAdmin] = useState(true);
+
+
+  const image_base_url = import.meta.env.VITE_TMDB_IMAGE_URL;
 
  const { user } = useUser();
   const { getToken } = useAuth();
@@ -104,11 +108,14 @@ useEffect(() => {
     getToken,
     navigate,
     isAdmin,
+    user,
     shows,
     favouriteMovies,
     fetchShows,
     fetchIsAdmin,
+    loadingAdmin,
     fetchFavoritesMovies,
+    image_base_url
   };
 
   return (

@@ -9,7 +9,7 @@ const movieSchema = new mongoose.Schema(
         backdrop_path: {type: String, default:""},
         release_date: {type: String, required: true},
         original_language: {type: String},
-        tagline: {type :Array, required: true},
+        tagline: {type :String, defaault: ""},
         genres: {type :Array, required: true},
         casts: {type: Array, required: true},
         vote_average: {type: Number, required: true},

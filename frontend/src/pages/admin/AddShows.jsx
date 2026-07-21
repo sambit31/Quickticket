@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { dummyShowsData } from "../../assets/assets";
 import Loading from "../../components/Loading";
 import { StarIcon, CheckIcon } from "lucide-react";
 import BlurCircle from "../../components/BlurCircle";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const AddShows = () => {
+
+  const { axios, getToken, user, image_base_url } = useAppContext();
   const currency = import.meta.env.VITE_CURRENCY;
 
   const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -14,9 +17,95 @@ const AddShows = () => {
   const [selectedTime, setSelectedTime] = useState("");
   const [dateTimeSelection, setDateTimeSelection] = useState({});
 
+  const [addingShow, setAddingShow] = useState(false)
+
+const fetchNowPlayingMovies = async () => {
+  try {
+    const token = await getToken();
+    
+
+    const { data } = await axios.get("/api/show/now-playing", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("API Response:", data);
+
+    if (data.success) {
+      setNowPlayingMovies(data.movies);
+    }
+  } catch (error) {
+    console.error(error.response?.data || error);
+  }
+};
+
+
+
+
+const handleSubmit = async () => {
+  try {
+    setAddingShow(true);
+
+    if (
+      !selectedMovie ||
+      !showPrice ||
+      Object.keys(dateTimeSelection).length === 0
+    ) {
+      toast.error("Missing required fields");
+      return;
+    }
+
+    const showsInput = Object.entries(dateTimeSelection).map(
+      ([date, time]) => ({
+        date,
+        time,
+      })
+    );
+
+    const payload = {
+      movieId: selectedMovie.id,
+      showsInput,
+      showPrice: Number(showPrice),
+    };
+
+    const { data } = await axios.post(
+      "/api/show/add",
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        },
+      }
+    );
+
+    if (data.success) {
+      toast.success(data.message);
+
+      setSelectedMovie(null);
+      setDateTimeSelection({});
+      setShowPrice("");
+      setSelectedDate("");
+      setSelectedTime("");
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error(error.response?.data?.message || "Failed to add show");
+  } finally {
+    setAddingShow(false);
+  }
+};
+
+
+
   useEffect(() => {
-    setNowPlayingMovies(dummyShowsData);
-  }, []);
+    if(user){
+      fetchNowPlayingMovies();
+    }
+
+  }, [user])
 
   const addTime = () => {
     if (!selectedDate || !selectedTime) return;
@@ -39,12 +128,12 @@ const AddShows = () => {
     setDateTimeSelection(updated);
   };
 
-  if (nowPlayingMovies.length === 0) return <Loading />;
+  //if (nowPlayingMovies.length === 0) return <Loading />;
 
   return (
     <div className="text-white">
       <BlurCircle top='-0px' />
-      <BlurCircle right='20px'bottom='-100px'/>
+      <BlurCircle right='20px' bottom='-100px' />
 
       {/* Heading */}
 
@@ -60,21 +149,21 @@ const AddShows = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-6 object-cover">
 
+
         {nowPlayingMovies.map((movie) => (
           <div
             key={movie.id}
             onClick={() => setSelectedMovie(movie)}
             className={`relative cursor-pointer rounded-xl overflow-hidden border transition-all duration-300
-            ${
-              selectedMovie?.id === movie.id
+            ${selectedMovie?.id === movie.id
                 ? "border-pink-500 ring-2 ring-pink-500"
                 : "border-white/10 hover:border-pink-500"
-            }`}
+              }`}
           >
             {/* Poster */}
 
             <img
-              src={movie.poster_path}
+              src={image_base_url + movie.poster_path}
               alt={movie.title}
               className="aspect-[2/3] w-full object-cover rounded-lg"
             />
@@ -224,7 +313,7 @@ const AddShows = () => {
 
         </div>
 
-        <button className="bg-pink-600 hover:bg-pink-700 px-8 py-3 rounded-lg font-semibold">
+        <button onClick={handleSubmit} disabled={addingShow} className="bg-pink-600 hover:bg-pink-700 px-8 py-3 rounded-lg font-semibold">
           Add Show
         </button>
 

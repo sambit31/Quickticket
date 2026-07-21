@@ -13,22 +13,28 @@ export const getNowPlayingMovies = async (req, res) => {
         headers: {
           Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
         },
+        
       }
     );
+    
 
     res.status(200).json({
       success: true,
       movies: data.results,
     });
-  } catch (error) {
-    console.error("TMDB Error:", error.response?.data || error.message);
+  }catch (error) {
+    console.log("MESSAGE:", error.message);
+    console.log("CODE:", error.code);
+    console.log("STATUS:", error.response?.status);
+    console.log("DATA:", error.response?.data);
+    console.log("CAUSE:", error.cause);
 
-    res.status(500).json({
-      success: false,
-      message: error.response?.data?.status_message || error.message,
+    return res.status(500).json({
+        success:false,
+        message:error.message
     });
-  }
-};
+}
+}
 
 // =======================
 // Add Movie Shows
@@ -36,7 +42,7 @@ export const getNowPlayingMovies = async (req, res) => {
 export const addShow = async (req, res) => {
   try {
     const { movieId, showsInput, showPrice } = req.body;
-
+    console.log(req.body);
     // Check if movie already exists
     let movie = await Movie.findById(movieId);
 
