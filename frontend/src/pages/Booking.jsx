@@ -36,10 +36,11 @@ const Booking = () => {
 
 
   useEffect(() => {
-    if(user){
+    if (user) {
       getMyBookings();
     }
   }, [user]);
+
 
   return !isLoading ? (
     <div className="relative px-6 md:px-16 lg:px-32 xl:px-44 pt-28 min-h-screen text-white">
@@ -96,9 +97,14 @@ const Booking = () => {
                 </div>
 
                 {!item.isPaid ? (
-                  <button className="bg-pink-600 hover:bg-pink-700 px-5 py-2 rounded-lg font-medium transition">
+                  <a
+                    href={item.paymentLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-pink-600 hover:bg-pink-700 px-5 py-2 rounded-lg font-medium transition inline-block"
+                  >
                     Pay Now
-                  </button>
+                  </a>
                 ) : (
                   <span className="px-4 py-2 rounded-lg bg-green-600 text-sm font-medium">
                     Paid

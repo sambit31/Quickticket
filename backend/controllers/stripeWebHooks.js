@@ -45,6 +45,8 @@ export const stripeWebhooks = async (req, res) => {
     }
 
     res.json({ received: true });
+    
+ 
   } catch (error) {
     console.log(error);
     res.status(500).json({

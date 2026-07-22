@@ -72,7 +72,7 @@ const MovieDetails = () => {
 
         <div className="absolute inset-0 bg-black/70" />
 
-        <div className="absolute inset-0 bg-linear-to-r from-[#09090B] via-[#09090B]/80 to-[#09090B]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#09090B] via-[#09090B]/80 to-[#09090B]" />
       </div>
 
       <BlurCircle top="-100px" left="-120px" />
