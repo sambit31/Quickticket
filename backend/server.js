@@ -10,6 +10,7 @@ import userRoutes from "./routes/userRoutes.js";
 import showRouter from "./routes/showRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
+import { stripeWebhooks } from "./controllers/stripeWebHooks.js";
 
 dotenv.config();
 
@@ -17,6 +18,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 await connectDB();
+
+//atripe
+app.use(
+  "/api/stripe",
+  express.raw({ type: "application/json" }),
+  stripeWebhooks
+);
+
 
 app.use(express.json());
 app.use(cors());

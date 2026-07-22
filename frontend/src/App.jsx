@@ -21,6 +21,7 @@ import ListBookings from "./pages/admin/ListBookings";
 import ListShows from "./pages/admin/ListShows";
 import Deshboard from "./pages/admin/Deshboard";
 import { useAppContext } from "./context/AppContext";
+import Loading from "./components/Loading";
 
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
         <Route path="/movies/:id" element={<MovieDetails />} />
         <Route path="/movies/:id/:date" element={<SeatLayout />} />
         <Route path="/my-bookings" element={<Booking />} />
+        <Route path="/loading/:nextUrl" element={<Loading />} />
         <Route path="/favorites" element={<Favorite />} />
 
 <Route
