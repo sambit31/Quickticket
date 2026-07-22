@@ -15,29 +15,29 @@ const MovieDetails = () => {
   const { id } = useParams();
   const [show, setShow] = useState(null);
 
-  const {shows, axios, getToken, user,fetchFavoritesMovies,favouriteMovies,image_base_url} = useAppContext()
+  const { shows, axios, getToken, user, fetchFavoritesMovies, favouriteMovies, image_base_url } = useAppContext()
 
-  const getShow = async() => {
+  const getShow = async () => {
     try {
-      const {data} = await axios.get(`/api/show/${id}`)
-      if(data.success){
+      const { data } = await axios.get(`/api/show/${id}`)
+      if (data.success) {
         setShow(data)
       }
-      
+
     } catch (error) {
       console.log(error)
     }
   };
 
- 
 
-  const handleFavorite = async()=>{
+
+  const handleFavorite = async () => {
     try {
-      if(!user) return toast.error("please login");
-      const {data} = await axios.post("/api/users/update-favorite",{movieId: id},
-        {headers:{Authorization: `Bearer ${await getToken()}`}}
+      if (!user) return toast.error("please login");
+      const { data } = await axios.post("/api/users/update-favorite", { movieId: id },
+        { headers: { Authorization: `Bearer ${await getToken()}` } }
       )
-      if(data.success){
+      if (data.success) {
         await fetchFavoritesMovies()
         toast.success(data.message)
       }
@@ -108,7 +108,7 @@ const MovieDetails = () => {
       hover:bg-pink-600 hover:border-pink-600
       transition-all duration-300"
               >
-                <Heart className={`w-5 h-5 ${favouriteMovies.find(movie => movie._id ===id) ? 'fill-pink-600 text-pink-500' : ""}`} />
+                <Heart className={`w-5 h-5 ${favouriteMovies.find(movie => movie._id === id) ? 'fill-pink-600 text-pink-500' : ""}`} />
               </button>
 
             </div>
@@ -208,24 +208,24 @@ const MovieDetails = () => {
           <h2 className="text-3xl font-bold mb-8">
             Cast
           </h2>
-<div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
-  {show.movie.casts.slice(0,12).map((cast,index) => (
-    <div
-      key={index}
-      className="flex-shrink-0 w-26 text-center group"
-    >
-      <img
-        src={image_base_url + cast.profile_path}
-        alt={cast.name}
-        className="w-22 h-22 rounded-full object-cover mx-auto border-2 border-transparent group-hover:border-pink-500 transition duration-300"
-      />
+          <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4">
+            {show.movie.casts.slice(0, 12).map((cast, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-26 text-center group"
+              >
+                <img
+                  src={image_base_url + cast.profile_path}
+                  alt={cast.name}
+                  className="w-22 h-22 rounded-full object-cover mx-auto border-2 border-transparent group-hover:border-pink-500 transition duration-300"
+                />
 
-      <h3 className="mt-3 font-semibold">
-        {cast.name}
-      </h3>
-    </div>
-  ))}
-</div>
+                <h3 className="mt-3 font-semibold">
+                  {cast.name}
+                </h3>
+              </div>
+            ))}
+          </div>
         </div>
         {/* Date Selection */}
         <div className="mt-20 flex justify-center" id="date-select">
