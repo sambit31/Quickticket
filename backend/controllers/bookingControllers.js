@@ -56,6 +56,8 @@ export const createBooking = async (req, res) => {
       show: showId,
       amount: showData.showPrice * selectedSeats.length,
       bookedSeats: selectedSeats,
+      status: "pending",
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
     });
 
     // Mark seats as occupied
@@ -87,7 +89,7 @@ const line_items = [
 
 const session = await stripeInstance.checkout.sessions.create({
   success_url: `${origin}/loading/my-bookings`,
-  cancel_url: `${origin}/my-bookings`,
+  cancel_url: `${origin}/payment-cancel/${booking._id}`,
   line_items,
   mode: "payment",
   metadata: {
@@ -127,5 +129,50 @@ export const getOccupiedSeats = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({success: false, message: error.message});
+  }
+};
+
+export const cancelBooking = async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      return res.json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+
+    // ✅ Don't allow cancelling a paid booking
+    if (booking.isPaid || booking.status === "paid") {
+      return res.json({
+        success: false,
+        message: "Booking already paid",
+      });
+    }
+
+    const show = await Show.findById(booking.show);
+
+    booking.bookedSeats.forEach((seat) => {
+      delete show.occupiedSeats[seat];
+    });
+
+    show.markModified("occupiedSeats");
+    await show.save();
+
+    await Booking.findByIdAndDelete(bookingId);
+
+    return res.json({
+      success: true,
+      message: "Booking cancelled successfully",
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };

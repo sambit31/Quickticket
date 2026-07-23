@@ -32,11 +32,12 @@ export const stripeWebhooks = async (req, res) => {
 
         const { bookingId } = session.metadata;
 
-        await Booking.findByIdAndUpdate(bookingId, {
-          isPaid: true,
-          paymentLink: "",
-        });
-
+    await Booking.findByIdAndUpdate(bookingId, {
+    isPaid: true,
+    status: "paid",
+    paymentLink: "",
+    expiresAt: null,
+});
         break;
       }
 

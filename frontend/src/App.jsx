@@ -22,6 +22,7 @@ import ListShows from "./pages/admin/ListShows";
 import Deshboard from "./pages/admin/Deshboard";
 import { useAppContext } from "./context/AppContext";
 import Loading from "./components/Loading";
+import PaymentCancel from "./pages/PaymentCancel";
 
 
 const App = () => {
@@ -45,6 +46,8 @@ const App = () => {
         <Route path="/my-bookings" element={<Booking />} />
         <Route path="/loading/:nextUrl" element={<Loading />} />
         <Route path="/favorites" element={<Favorite />} />
+        <Route path="/payment-cancel/:bookingId" element={<PaymentCancel/>}/>
+
 
 <Route
   path="/admin/*"

@@ -95,21 +95,32 @@ const Booking = () => {
                     Total Tickets: {item.bookedSeats.length}
                   </p>
                 </div>
+                <div className="flex items-center gap-3">
 
-                {!item.isPaid ? (
-                  <a
-                    href={item.paymentLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-pink-600 hover:bg-pink-700 px-5 py-2 rounded-lg font-medium transition inline-block"
-                  >
-                    Pay Now
-                  </a>
-                ) : (
-                  <span className="px-4 py-2 rounded-lg bg-green-600 text-sm font-medium">
-                    Paid
-                  </span>
-                )}
+                  {item.status === "paid" && (
+                    <span className="px-4 py-2 rounded-lg bg-green-600 text-sm font-medium">
+                      Paid
+                    </span>
+                  )}
+
+                  {item.status === "pending" && (
+                    <a
+                      href={item.paymentLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-pink-600 hover:bg-pink-700 px-5 py-2 rounded-lg font-medium transition"
+                    >
+                      Pay Now
+                    </a>
+                  )}
+
+                  {item.status === "cancelled" && (
+                    <span className="px-4 py-2 rounded-lg text-red-500 text-sm font-medium">
+                      Cancelled
+                    </span>
+                  )}
+
+                </div>
               </div>
             </div>
           </div>

@@ -11,6 +11,7 @@ import showRouter from "./routes/showRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
 import adminRouter from "./routes/adminRoutes.js";
 import { stripeWebhooks } from "./controllers/stripeWebHooks.js";
+import bookingExpiryJob from "./jobs/bookingExpiryJob.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 await connectDB();
+bookingExpiryJob();
 
 //atripe
 app.use(
