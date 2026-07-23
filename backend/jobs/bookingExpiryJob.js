@@ -6,8 +6,6 @@ const bookingExpiryJob = () => {
   // Runs every minute
   cron.schedule("* * * * *", async () => {
     try {
-      console.log("Checking expired bookings...");
-
       const expiredBookings = await Booking.find({
         status: "pending",
         isPaid: false,

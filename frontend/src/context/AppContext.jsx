@@ -66,8 +66,6 @@ const fetchIsAdmin = async () => {
   try {
     const token = await getToken();
      
-console.log(token);
-
     const { data } = await axios.get("/api/users/favorites", {
       headers: {
         Authorization: `Bearer ${token}`,
