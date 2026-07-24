@@ -6,15 +6,7 @@ import sendBookingEmail from "../utils/sendBookingEmail.js";
 import dateFormat from "../utils/dateFormat.js";
 import timeFormat from "../utils/timeFormat.js";
 
-  
 export const stripeWebhooks = async (req, res) => {
-  console.log("========== WEBHOOK ==========");
-  console.log("Secret exists:", !!process.env.STRIPE_SECRET_KEY);
-  console.log("Webhook secret exists:", !!process.env.STRIPE_WEBHOOK_KEY);
-  console.log("Signature exists:", !!req.headers["stripe-signature"]);
-  console.log("Body type:", typeof req.body);
-  console.log("Is Buffer:", Buffer.isBuffer(req.body));
-
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
   const signature = req.headers["stripe-signature"];
@@ -27,12 +19,7 @@ export const stripeWebhooks = async (req, res) => {
       signature,
       process.env.STRIPE_WEBHOOK_KEY
     );
-
-    console.log("✅ Webhook Verified:", event.type);
   } catch (err) {
-    console.error("❌ Webhook Verification Failed");
-    console.error(err.message);
-
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
@@ -43,28 +30,21 @@ export const stripeWebhooks = async (req, res) => {
 
         const bookingId = session.metadata.bookingId;
 
-        if (!bookingId) {
-          console.log("❌ Booking ID not found in metadata");
-          break;
-        }
+        if (!bookingId) break;
 
         const booking = await Booking.findById(bookingId);
 
-        if (!booking) {
-          console.log("❌ Booking not found");
-          break;
+        if (!booking) break;
+
+        if (!booking.isPaid) {
+          booking.isPaid = true;
+          booking.status = "paid";
+          booking.paymentLink = "";
+
+          await booking.save();
         }
 
-       if (!booking.isPaid) {
-  booking.isPaid = true;
-  booking.status = "paid";
-  booking.paymentLink = "";
-
-  await booking.save();
-}
-
         const user = await User.findById(booking.user);
-
         const show = await Show.findById(booking.show).populate("movie");
 
         if (user && show) {
@@ -76,22 +56,17 @@ export const stripeWebhooks = async (req, res) => {
             seats: booking.bookedSeats.join(", "),
             amount: booking.amount,
           });
-
-          console.log("✅ Confirmation email sent");
         }
 
         break;
       }
 
       default:
-        console.log(`Unhandled Event: ${event.type}`);
+        break;
     }
 
     return res.json({ received: true });
   } catch (err) {
-    console.error("❌ Webhook Processing Error");
-    console.error(err);
-
     return res.status(500).json({
       success: false,
       message: err.message,
