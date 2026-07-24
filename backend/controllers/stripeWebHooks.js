@@ -6,8 +6,15 @@ import sendBookingEmail from "../utils/sendBookingEmail.js";
 import dateFormat from "../utils/dateFormat.js";
 import timeFormat from "../utils/timeFormat.js";
 
-
+  
 export const stripeWebhooks = async (req, res) => {
+  console.log("========== WEBHOOK ==========");
+  console.log("Secret exists:", !!process.env.STRIPE_SECRET_KEY);
+  console.log("Webhook secret exists:", !!process.env.STRIPE_WEBHOOK_KEY);
+  console.log("Signature exists:", !!req.headers["stripe-signature"]);
+  console.log("Body type:", typeof req.body);
+  console.log("Is Buffer:", Buffer.isBuffer(req.body));
+
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
   const signature = req.headers["stripe-signature"];
