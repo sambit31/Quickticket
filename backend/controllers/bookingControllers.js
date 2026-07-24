@@ -132,6 +132,8 @@ export const getOccupiedSeats = async (req, res) => {
   }
 };
 
+
+
 export const cancelBooking = async (req, res) => {
   try {
     const { bookingId } = req.body;
