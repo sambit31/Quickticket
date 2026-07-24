@@ -55,13 +55,13 @@ export const stripeWebhooks = async (req, res) => {
           break;
         }
 
-        if (!booking.isPaid) {
-          booking.isPaid = true;
-          booking.status = "paid";
-          booking.paymentLink = "";
-          booking.expiresAt = null;
-          await booking.save();
-        }
+       if (!booking.isPaid) {
+  booking.isPaid = true;
+  booking.status = "paid";
+  booking.paymentLink = "";
+
+  await booking.save();
+}
 
         const user = await User.findById(booking.user);
 
