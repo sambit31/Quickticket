@@ -64,6 +64,7 @@ export const stripeWebhooks = async (req, res) => {
       default:
         break;
     }
+    
 
     return res.json({ received: true });
   } catch (err) {
