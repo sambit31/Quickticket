@@ -62,8 +62,6 @@ export const stripeWebhooks = async (req, res) => {
 
           const ticketPath = await generateTicket(bookingData);
 
-          console.log(ticketPath);
-          console.log(fs.existsSync(ticketPath));
           // const ticketPath = await generateTicket(...);
 
           await sendBookingEmail(

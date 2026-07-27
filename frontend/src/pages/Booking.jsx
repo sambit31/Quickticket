@@ -5,6 +5,7 @@ import BlurCircle from "../components/BlurCircle";
 import TimeFormat from "../lib/TimeFormat";
 import { dateFormat } from "../lib/dateFormat";
 import { useAppContext } from "../context/AppContext";
+import isoTimeFormat from "../lib/isoTimeFormat";
 
 const Booking = () => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -77,7 +78,7 @@ const Booking = () => {
               </p>
 
               <p className="text-gray-400 mt-2">
-                🕒 {TimeFormat(item.show.showDateTime)}
+                🕒 {TimeFormat(item.show.movie.runtime)}
               </p>
 
               <p className="text-gray-400 mt-2">
