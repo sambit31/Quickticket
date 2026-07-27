@@ -5,6 +5,8 @@ import { User } from "../models/User.js";
 import sendBookingEmail from "../utils/sendBookingEmail.js";
 import dateFormat from "../utils/dateFormat.js";
 import timeFormat from "../utils/timeFormat.js";
+import { generateTicket } from "../utils/generatePDF.js";
+    import fs from "fs";
 
 export const stripeWebhooks = async (req, res) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -48,7 +50,7 @@ export const stripeWebhooks = async (req, res) => {
         const show = await Show.findById(booking.show).populate("movie");
 
         if (user && show) {
-          await sendBookingEmail(user.email, {
+          const ticketPath = await generateTicket({
             id: booking._id,
             movie: show.movie.title,
             date: dateFormat(show.showDateTime),
@@ -56,6 +58,23 @@ export const stripeWebhooks = async (req, res) => {
             seats: booking.bookedSeats.join(", "),
             amount: booking.amount,
           });
+      
+
+console.log(ticketPath);
+console.log("PDF Exists:", fs.existsSync(ticketPath));
+
+          await sendBookingEmail(
+            user.email,
+            {
+              id: booking._id,
+              movie: show.movie.title,
+              date: dateFormat(show.showDateTime),
+              time: timeFormat(show.showDateTime),
+              seats: booking.bookedSeats.join(", "),
+              amount: booking.amount,
+            },
+            ticketPath
+          );
         }
 
         break;
@@ -64,7 +83,7 @@ export const stripeWebhooks = async (req, res) => {
       default:
         break;
     }
-    
+
 
     return res.json({ received: true });
   } catch (err) {

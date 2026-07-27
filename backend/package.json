@@ -18,10 +18,13 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^4.21.2",
+    "image-size": "^2.0.2",
     "inngest": "^3.54.2",
     "mongoose": "^9.7.4",
     "node-cron": "^4.6.0",
     "nodemailer": "^9.0.3",
+    "pdfkit": "^0.19.1",
+    "qrcode": "^1.5.4",
     "stripe": "^22.3.2",
     "svix": "^1.98.0"
   },
