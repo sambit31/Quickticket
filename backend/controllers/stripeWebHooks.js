@@ -6,7 +6,7 @@ import sendBookingEmail from "../utils/sendBookingEmail.js";
 import dateFormat from "../utils/dateFormat.js";
 import timeFormat from "../utils/timeFormat.js";
 import { generateTicket } from "../utils/generatePDF.js";
-    import fs from "fs";
+import fs from "fs";
 
 export const stripeWebhooks = async (req, res) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -46,28 +46,39 @@ export const stripeWebhooks = async (req, res) => {
           await booking.save();
         }
 
-       const user = await User.findById(booking.user);
-const show = await Show.findById(booking.show).populate("movie");
+        const user = await User.findById(booking.user);
+        const show = await Show.findById(booking.show).populate("movie");
 
-if (user && show) {
+        if (user && show) {
 
-  const bookingData = {
-    id: booking._id.toString(),
-    movie: show.movie.title,
-    date: dateFormat(show.showDateTime),
-    time: timeFormat(show.showDateTime),
-    seats: booking.bookedSeats.join(", "),
-    amount: booking.amount,
-  };
+          const bookingData = {
+            id: booking._id.toString(),
+            movie: show.movie.title,
+            date: dateFormat(show.showDateTime),
+            time: timeFormat(show.showDateTime),
+            seats: booking.bookedSeats.join(", "),
+            amount: booking.amount,
+          };
 
-  const ticketPath = await generateTicket(bookingData);
+          const ticketPath = await generateTicket(bookingData);
 
-  await sendBookingEmail(
-    user.email,
-    bookingData,
-    ticketPath
-  );
-}
+          console.log(ticketPath);
+          console.log(fs.existsSync(ticketPath));
+          // const ticketPath = await generateTicket(...);
+
+          await sendBookingEmail(
+            user.email,
+            {
+              id: booking._id,
+              movie: show.movie.title,
+              date: dateFormat(show.showDateTime),
+              time: timeFormat(show.showDateTime),
+              seats: booking.bookedSeats.join(", "),
+              amount: booking.amount,
+            },
+            ticketPath
+          );
+        }
 
         break;
       }

@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 const generateQRCode = async (booking) => {
-  const qrFolder = path.join(process.cwd(), "tickets");
+  const qrFolder = "/tmp";
 
   if (!fs.existsSync(qrFolder)) {
     fs.mkdirSync(qrFolder);
