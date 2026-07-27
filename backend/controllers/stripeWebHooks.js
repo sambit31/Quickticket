@@ -46,36 +46,28 @@ export const stripeWebhooks = async (req, res) => {
           await booking.save();
         }
 
-        const user = await User.findById(booking.user);
-        const show = await Show.findById(booking.show).populate("movie");
+       const user = await User.findById(booking.user);
+const show = await Show.findById(booking.show).populate("movie");
 
-        if (user && show) {
-          const ticketPath = await generateTicket({
-            id: booking._id,
-            movie: show.movie.title,
-            date: dateFormat(show.showDateTime),
-            time: timeFormat(show.showDateTime),
-            seats: booking.bookedSeats.join(", "),
-            amount: booking.amount,
-          });
-      
+if (user && show) {
 
-console.log(ticketPath);
-console.log("PDF Exists:", fs.existsSync(ticketPath));
+  const bookingData = {
+    id: booking._id.toString(),
+    movie: show.movie.title,
+    date: dateFormat(show.showDateTime),
+    time: timeFormat(show.showDateTime),
+    seats: booking.bookedSeats.join(", "),
+    amount: booking.amount,
+  };
 
-          await sendBookingEmail(
-            user.email,
-            {
-              id: booking._id,
-              movie: show.movie.title,
-              date: dateFormat(show.showDateTime),
-              time: timeFormat(show.showDateTime),
-              seats: booking.bookedSeats.join(", "),
-              amount: booking.amount,
-            },
-            ticketPath
-          );
-        }
+  const ticketPath = await generateTicket(bookingData);
+
+  await sendBookingEmail(
+    user.email,
+    bookingData,
+    ticketPath
+  );
+}
 
         break;
       }

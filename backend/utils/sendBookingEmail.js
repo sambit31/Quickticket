@@ -1,58 +1,38 @@
 import transporter from "../configs/mail.js";
 
 const sendBookingEmail = async (email, booking, ticketPath) => {
-  try {
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "🎬 QuickTicket Booking Confirmed",
 
-      to: email,
+    html: `
+      <h2>Booking Confirmed ✅</h2>
 
-      subject: "🎬 QuickTicket Booking Confirmed",
+      <p><b>Movie:</b> ${booking.movie}</p>
 
-      attachments: [
-        {
-          filename: "QuickTicket.pdf",
-          path: ticketPath,
-        },
-      ],
+      <p><b>Date:</b> ${booking.date}</p>
 
+      <p><b>Time:</b> ${booking.time}</p>
 
-      html: `
-      <div style="font-family:Arial;padding:20px">
+      <p><b>Seats:</b> ${booking.seats}</p>
 
-        <h2>Booking Confirmed ✅</h2>
+      <p><b>Amount:</b> $${booking.amount}</p>
 
-        <p>Thank you for booking with <b>QuickTicket</b>.</p>
+      <p><b>Booking ID:</b> ${booking.id}</p>
 
-        <hr>
+      <br>
 
-        <h3>${booking.movie}</h3>
+      <b>Your PDF Ticket is attached.</b>
+    `,
 
-        <p><b>Date:</b> ${booking.date}</p>
-
-        <p><b>Time:</b> ${booking.time}</p>
-
-        <p><b>Seats:</b> ${booking.seats}</p>
-
-        <p><b>Amount:</b> $${booking.amount}</p>
-
-        <p><b>Booking ID:</b> ${booking.id}</p>
-
-        <br>
-
-        <p>Your movie ticket is attached as a PDF.</p>
-
-        <h3>Enjoy your movie 🍿</h3>
-
-      </div>
-      `,
-    });
-
-    console.log(info);
-    console.log(ticketPath);
-  } catch (error) {
-    console.error(error);
-  }
+    attachments: [
+      {
+        filename: `QuickTicket-${booking.id}.pdf`,
+        path: ticketPath,
+      },
+    ],
+  });
 };
 
 export default sendBookingEmail;
