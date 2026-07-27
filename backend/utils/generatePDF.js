@@ -85,35 +85,35 @@ export const generateTicket = async (booking) => {
     doc
       .fontSize(15)
       .fillColor("black")
-      .text(`🎬 Movie : ${booking.movie}`);
+      .text(` Movie : ${booking.movie}`);
 
     doc.moveDown(0.4);
 
-    doc.text(`🏢 Theatre : QuickTicket Cinema`);
+    doc.text(` Theatre : QuickTicket Cinema`);
 
     doc.moveDown(0.4);
 
-    doc.text(`🎟 Screen : Screen 2`);
+    doc.text(` Screen : Screen 2`);
 
     doc.moveDown(0.4);
 
-    doc.text(`📅 Date : ${booking.date}`);
+    doc.text(` Date : ${booking.date}`);
 
     doc.moveDown(0.4);
 
-    doc.text(`🕒 Time : ${booking.time}`);
+    doc.text(` Time : ${booking.time}`);
 
     doc.moveDown(0.4);
 
-    doc.text(`💺 Seats : ${booking.seats}`);
+    doc.text(` Seats : ${booking.seats}`);
 
     doc.moveDown(0.4);
 
-    doc.text(`💵 Amount : $${booking.amount}`);
+    doc.text(` Amount : $${booking.amount}`);
 
     doc.moveDown(0.4);
 
-    doc.text(`🆔 Booking ID : ${bookingNumber}`);
+    doc.text(` Booking ID : ${bookingNumber}`);
 
     doc.moveDown();
 
@@ -124,7 +124,7 @@ export const generateTicket = async (booking) => {
     doc
       .fontSize(16)
       .fillColor("green")
-      .text("✅ PAYMENT SUCCESSFUL", {
+      .text(" PAYMENT SUCCESSFUL", {
         align: "center",
       });
 
@@ -192,7 +192,7 @@ export const generateTicket = async (booking) => {
     doc
       .fontSize(14)
       .fillColor("#16a34a")
-      .text("Enjoy your movie 🍿", {
+      .text("Enjoy your movie ", {
         align: "center",
       });
 
