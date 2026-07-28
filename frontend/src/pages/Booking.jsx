@@ -6,6 +6,7 @@ import TimeFormat from "../lib/TimeFormat";
 import { dateFormat } from "../lib/dateFormat";
 import { useAppContext } from "../context/AppContext";
 import isoTimeFormat from "../lib/isoTimeFormat";
+import { downloadTicket } from "../lib/bookingApi";
 
 const Booking = () => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -41,6 +42,27 @@ const Booking = () => {
       getMyBookings();
     }
   }, [user]);
+
+  const handleDownload = async (id) => {
+
+    const pdf = await downloadTicket(id);
+
+    const url = window.URL.createObjectURL(pdf);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = "QuickTicket.pdf";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    window.URL.revokeObjectURL(url);
+  };
 
 
   return !isLoading ? (
@@ -103,6 +125,12 @@ const Booking = () => {
                       Paid
                     </span>
                   )}
+                  <button
+                    onClick={() => handleDownload(item._id)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+                  >
+                    Download Ticket
+                  </button>
 
                   {item.status === "pending" && (
                     <a
