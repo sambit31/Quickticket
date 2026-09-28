@@ -25,6 +25,7 @@
     "nodemailer": "^9.0.3",
     "pdfkit": "^0.19.1",
     "qrcode": "^1.5.4",
+    "socket.io": "^4.8.4",
     "stripe": "^22.3.2",
     "svix": "^1.98.0"
   },

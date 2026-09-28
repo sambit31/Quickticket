@@ -12,7 +12,7 @@ const Movies = () => {
     <div className='relative px-6 md:px-16 lg:px-24 xl:px-44 py-24 min-h-screen overflow-hidden'>
 
       <BlurCircle top='-100px' left='-100px' />
-      <BlurCircle bottom='0' right='-40px' bottom='70px' />
+      <BlurCircle right='-40px' bottom='70px' />
 
       {/* Heading */}
       <div className='mb-12 text-center'>
